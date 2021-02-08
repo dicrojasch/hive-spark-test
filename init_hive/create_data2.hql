@@ -119,10 +119,12 @@ INSERT INTO co_ventas_INT VALUES('2015-01-01', 'ventas', 'onsite', '201', 'venta
 ('2020-12-29', 'comercial', 'online', '60', 'venta internacional de equipos');
 
 INSERT INTO co_ventas PARTITION(data_date) 
-SELECT row_number() over () as id,dpto,sale_type,sale_count,value,data_date FROM co_ventas_int order by id limit 50 offset 0;
+SELECT row_number() over () as id,dpto,sale_type,sale_count,value,data_date FROM co_ventas_int; 
 
-INSERT INTO co_ventas PARTITION(data_date)
-SELECT row_number() over () as id,dpto,sale_type,sale_count,value,data_date FROM co_ventas_int order by id limit 50 offset 50;
+CREATE TABLE IF NOT EXISTS co_ventas2 (id BIGINT, dpto VARCHAR(250), sale_type VARCHAR (250), sale_count BIGINT, value VARCHAR(250), month INT, primary key(id) disable novalidate)
+PARTITIONED BY (data_date DATE);
 
-INSERT INTO co_ventas PARTITION(data_date)
-SELECT row_number() over () as id,dpto,sale_type,sale_count,value,data_date FROM co_ventas_int order by id limit 50 offset 100;
+INSERT INTO co_ventas2 PARTITION(data_date)
+SELECT row_number() over () as id, dpto, sale_type, sale_count, value, month(data_date) as month, data_date FROM co_ventas
+WHERE YEAR(data_date) >= 2017 AND YEAR(data_date) <= 2020
+GROUP BY data_date, dpto, sale_type, sale_count, value;
