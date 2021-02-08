@@ -18,10 +18,6 @@ $(echo $COL4 | cut -d "," -f $(echo 1 | awk "{print $x%11+1}")),\
 $(echo $COL5 | cut -d "," -f $(echo 1 | awk "{print $x%7+1}")),\
 $(shuf -i 100000-10000000 -n 1) "' > test.csv
 
-seq 1 250000 | xargs -I{} cat test.csv > test_file.csv
-seq 1 250000 | xargs -I{} cat test.csv > test_file.csv
-seq 1 250000 | xargs -I{} cat test.csv > test_file.csv
-seq 1 250000 | xargs -I{} cat test.csv > test_file.csv
-seq 1 250000 | xargs -I{} cat test.csv > test_file.csv
-seq 1 250600 | xargs -I{} cat test.csv > test_file.csv
+seq 1 1000000 | xargs -I{} cat test.csv > test_file.csv
+seq 1 500600 | xargs -I{} cat test.csv > test_file.csv
 rm test.csv
